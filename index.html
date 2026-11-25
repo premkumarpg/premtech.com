@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Premkumar PG | Linux Server Administrator &amp; DevOps Engineer</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root {
+      --bg: #060d1a;
+      --bg2: #0d1b2e;
+      --bg3: #112240;
+      --accent: #64ffda;
+      --accent2: #38bdf8;
+      --text: #ccd6f6;
+      --text-dim: #8892b0;
+      --border: #1e3a5f;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    code, .mono { font-family: 'JetBrains Mono', monospace; }
+    a { text-decoration: none; color: inherit; }
+    .container { width: 90%; max-width: 1100px; margin: auto; }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* NAV */
+    header {
+      background: rgba(6,13,26,0.9);
+      backdrop-filter: blur(12px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav { display:flex; justify-content:space-between; align-items:center; }
+
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .logo span { color: var(--text-dim); }
+
+    nav ul { display:flex; list-style:none; gap:28px; }
+    nav ul li a { font-size: 14px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; }
+    nav ul li a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 0 60px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(100,255,218,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100,255,218,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+
+    /* PHOTO */
+    .photo-wrap { position: relative; flex-shrink: 0; }
+
+    .photo-frame {
+      width: 210px;
+      height: 210px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .photo-frame img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* Photo placeholder — remove once you add your photo */
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--bg3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-dim);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      text-align: center;
+      padding: 16px;
+    }
+    .photo-placeholder svg { opacity: 0.35; }
+
+    .photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 10px -10px -10px 10px;
+      border: 2px solid var(--accent2);
+      border-radius: 16px;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* HERO TEXT */
+    .hero-text { flex: 1; min-width: 280px; }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 58px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    .hero h1 .name { color: var(--accent); }
+
+    .hero .tagline {
+      font-size: 15px;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      max-width: 520px;
+      line-height: 1.75;
+    }
+
+    /* STAT BADGES */
+    .hero-stats {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .stat-badge {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      text-align: center;
+    }
+    .stat-badge .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+    .stat-badge .lbl { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; }
+
+    /* CONTACT PILLS */
+    .contact-pills { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:28px; }
+
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 8px 15px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+      transition: 0.2s;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent); }
+    .pill svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* BUTTONS */
+    .btn-row { display:flex; gap:14px; flex-wrap:wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: 0.25s;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #060d1a; border: none; }
+    .btn-primary:hover { background: #4dd9c0; transform: translateY(-2px); }
+    .btn-outline { border: 1px solid var(--accent); color: var(--accent); }
+    .btn-outline:hover { background: rgba(100,255,218,0.08); transform: translateY(-2px); }
+
+    /* SECTIONS */
+    section { padding: 90px 0; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      margin-bottom: 48px;
+      letter-spacing: -0.5px;
+    }
+    .section-title span { color: var(--accent); }
+
+    /* ABOUT */
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:start; }
+
+    .about-text { color: var(--text-dim); line-height: 1.8; font-size: 15px; }
+    .about-text p + p { margin-top: 14px; }
+
+    .info-table { width: 100%; }
+    .info-table tr td { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .info-table tr td:first-child {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      width: 100px;
+      font-size: 12px;
+    }
+
+    /* SKILLS */
+    .skills-section { background: var(--bg2); }
+    .skills-group { margin-bottom: 38px; }
+    .skills-group:last-child { margin-bottom: 0; }
+
+    .skills-group-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skills-flex { display:flex; flex-wrap:wrap; gap:10px; }
+
+    .skill-tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 7px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      transition: 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(100,255,218,0.05); }
+
+    /* PROJECTS */
+    .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; }
+
+    .project-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px;
+      transition: 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0); transition:0.3s; transform-origin:left;
+    }
+    .project-card:hover { transform:translateY(-4px); border-color:var(--accent2); }
+    .project-card:hover::before { transform:scaleX(1); }
+
+    .project-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+    .project-icon { color: var(--accent); }
+
+    .project-link {
+      color: var(--text-dim); transition:0.2s;
+      display:flex; align-items:center; gap:5px; font-size:12px;
+    }
+    .project-link:hover { color: var(--accent); }
+
+    .project-card h3 { font-size:16px; font-weight:600; margin-bottom:8px; color:var(--text); }
+    .project-card p { color:var(--text-dim); font-size:13px; line-height:1.7; margin-bottom:14px; }
+
+    .project-tags { display:flex; flex-wrap:wrap; gap:7px; }
+    .project-tag {
+      font-family:'JetBrains Mono',monospace; font-size:11px;
+      color:var(--accent); background:rgba(100,255,218,0.07);
+      padding:3px 10px; border-radius:4px;
+    }
+
+    /* EXPERIENCE */
+    .experience-section { background: var(--bg2); }
+
+    .timeline { max-width: 860px; position:relative; }
+    .timeline::before {
+      content:''; position:absolute; left:0; top:6px; bottom:0;
+      width:1px; background:linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .timeline-item { padding-left:30px; margin-bottom:46px; position:relative; }
+    .timeline-item::before {
+      content:''; position:absolute; left:-4px; top:6px;
+      width:9px; height:9px; border-radius:50%;
+      background:var(--accent); box-shadow:0 0 10px var(--accent);
+    }
+
+    .timeline-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:4px; }
+    .timeline-title { font-size:17px; font-weight:600; color:var(--text); }
+    .timeline-company { color:var(--accent); font-size:14px; font-weight:500; margin-bottom:4px; }
+    .timeline-date {
+      font-family:'JetBrains Mono',monospace; font-size:11px;
+      color:var(--text-dim); background:var(--bg3); padding:4px 12px;
+      border-radius:100px; border:1px solid var(--border); white-space:nowrap;
+    }
+
+    .timeline-desc { color:var(--text-dim); font-size:13.5px; line-height:1.75; margin-top:10px; }
+    .timeline-desc ul { padding-left:18px; margin-top:6px; }
+    .timeline-desc ul li { margin-bottom:5px; }
+
+    /* CERTS */
+    .certs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+
+    .cert-card {
+      background:var(--bg3); border:1px solid var(--border);
+      border-radius:10px; padding:20px 22px;
+      display:flex; align-items:flex-start; gap:14px;
+      transition:0.2s;
+    }
+    .cert-card:hover { border-color:var(--accent); }
+    .cert-icon { color:var(--accent); flex-shrink:0; margin-top:2px; }
+    .cert-card h4 { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+    .cert-card p { font-size:12px; color:var(--text-dim); font-family:'JetBrains Mono',monospace; }
+
+    /* CONTACT */
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+
+    .contact-info h3 { font-size:22px; font-weight:600; margin-bottom:12px; }
+    .contact-info p { color:var(--text-dim); font-size:15px; line-height:1.7; margin-bottom:28px; }
+
+    .contact-links { display:flex; flex-direction:column; gap:12px; }
+
+    .contact-link {
+      display:flex; align-items:center; gap:14px;
+      padding:14px 18px;
+      background:var(--bg3); border:1px solid var(--border);
+      border-radius:10px; transition:0.2s;
+      color:var(--text-dim); font-size:13px;
+    }
+    .contact-link:hover { border-color:var(--accent); color:var(--accent); background:rgba(100,255,218,0.04); }
+    .contact-link svg { color:var(--accent); flex-shrink:0; }
+    .contact-link span { font-family:'JetBrains Mono',monospace; font-size:12px; }
+
+    .contact-form { display:flex; flex-direction:column; gap:14px; }
+    .contact-form input, .contact-form textarea {
+      background:var(--bg3); border:1px solid var(--border);
+      color:var(--text); padding:13px 16px; border-radius:8px;
+      font-family:'Space Grotesk',sans-serif; font-size:14px;
+      outline:none; transition:0.2s; resize:none;
+    }
+    .contact-form input:focus, .contact-form textarea:focus { border-color:var(--accent); }
+    .contact-form input::placeholder, .contact-form textarea::placeholder { color:var(--text-dim); }
+    .contact-form textarea { height:120px; }
+
+    /* FOOTER */
+    footer {
+      background:var(--bg2); text-align:center;
+      padding:22px 0; color:var(--text-dim);
+      font-size:13px; border-top:1px solid var(--border);
+      font-family:'JetBrains Mono',monospace;
+    }
+    footer a { color:var(--accent); }
+
+    /* RESPONSIVE */
+    @media(max-width:768px) {
+      nav ul { gap:16px; }
+      .hero-inner { flex-direction:column; gap:32px; }
+      .photo-frame { width:160px; height:160px; }
+      .about-grid, .contact-grid { grid-template-columns:1fr; gap:36px; }
+      .hero-stats { gap:12px; }
+    }
+    @media(max-width:520px) {
+      nav { flex-direction:column; gap:12px; }
+      nav ul { flex-wrap:wrap; justify-content:center; gap:10px; }
+    }
+  
+/* Resume-aligned portfolio refinements */
+.resume-education-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:24px}
+.resume-edu-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:22px}
+.resume-edu-card h3{font-size:16px;color:var(--text);margin:12px 0 6px}
+.resume-edu-card p{font-size:13px;color:var(--text-dim);line-height:1.7}
+.photo-frame img{object-position:center 30%}
+.project-link{white-space:nowrap}
+@media(max-width:700px){.about-grid{grid-template-columns:1fr;gap:28px}.timeline-header{flex-direction:column}.hero-inner{gap:32px}.hero-stats{gap:9px}.stat-badge{padding:9px 12px}.stat-badge .num{font-size:17px}}
+</style>
+<meta content="Premkumar PG — Linux Server Administrator and DevOps Engineer. Linux infrastructure, AWS, automation, CI/CD, monitoring and security." name="description"/></head>
+<body>
+<!-- ═══════ NAV ═══════ -->
+<header>
+<div class="container">
+<nav>
+<div class="logo">PK<span>.portfolio</span></div>
+<ul>
+<li><a href="#about">About</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#experience">Experience</a></li>
+<li><a href="#certifications">Certs</a></li>
+<li><a href="#contact">Contact</a></li>
+<li><a download="Premkumar_PG_Resume.pdf" href="Premkumar_PG_Resume.pdf">Download CV ↓</a></li></ul>
+</nav>
+</div>
+</header>
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+<div class="container">
+<div class="hero-inner">
+<!-- PHOTO — Replace the placeholder div below with:
+           <img src="your-photo.jpg" alt="Premkumar PG" />
+           once you have your photo ready tomorrow -->
+<div class="photo-wrap">
+<div class="photo-frame">
+<img alt="Professional portrait of Premkumar PG" src="assets/premkumar-profile.jpg"/>
+</div>
+</div>
+<div class="hero-text">
+<div class="hero-label">// linux server administrator &amp; devops engineer</div>
+<h1>
+          Hello, I'm<br/>
+<span class="name">Premkumar PG</span>
+</h1>
+<p class="tagline">2.5+ years of experience across Technical Support and Linux server administration, including 1.5+ years as a Linux Server Administrator. Linux infrastructure · AWS · Automation · CI/CD.</p>
+<!-- KEY STATS -->
+<div class="hero-stats"><div class="stat-badge"><span class="num">2.5+</span><span class="lbl">Years Experience</span></div><div class="stat-badge"><span class="num">65+</span><span class="lbl">Servers Managed</span></div><div class="stat-badge"><span class="num">99.9%</span><span class="lbl">SLA Uptime</span></div><div class="stat-badge"><span class="num">15+</span><span class="lbl">Enterprise Clients</span></div></div>
+<!-- CONTACT PILLS -->
+<div class="contact-pills"><a class="pill" href="tel:+919944159546">+91 9944159546</a><a class="pill" href="mailto:prem5182026@gmail.com">prem5182026@gmail.com</a><a class="pill" href="https://linkedin.com/in/prem5182026" rel="noopener noreferrer" target="_blank">LinkedIn Profile</a></div>
+<div class="btn-row">
+<a class="btn btn-primary" download="Premkumar_PG_Resume.pdf" href="Premkumar_PG_Resume.pdf">
+<svg fill="none" height="15" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="15">
+<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7,10 12,15 17,10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line>
+</svg>
+            Download Resume
+          </a>
+<a class="btn btn-outline" href="https://github.com/premkumarpg" target="_blank">
+<svg fill="currentColor" height="15" viewbox="0 0 24 24" width="15">
+<path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"></path>
+</svg>
+            GitHub
+          </a>
+<a class="btn btn-outline" href="https://linkedin.com/in/prem5182026" target="_blank">
+<svg fill="currentColor" height="15" viewbox="0 0 24 24" width="15">
+<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+</svg>
+            LinkedIn
+          </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════ ABOUT ═══════ -->
+<section id="about">
+<div class="container">
+<div class="section-label">01. about</div>
+<h2 class="section-title">About <span>Me</span></h2>
+<div class="about-grid">
+<div class="about-text"><p>IT professional with 2.5+ years of experience across Technical Support and Linux server administration, including 1.5+ years as a Linux Server Administrator.</p><p>Skilled in Linux infrastructure management, incident response, monitoring, security hardening, identity and access management, endpoint security, DNS and email troubleshooting, and Bash/Python automation.</p><p>Hands-on with AWS, Terraform, Ansible, Docker, Kubernetes, Git, and GitHub Actions CI/CD. Focused on reliable operations, practical automation, and secure infrastructure.</p></div>
+<table class="info-table"><tr><td>Name</td><td>Premkumar PG</td></tr><tr><td>Role</td><td>Linux Server Administrator | DevOps Engineer</td></tr><tr><td>Phone</td><td>+91 9944159546</td></tr><tr><td>Email</td><td><a href="mailto:prem5182026@gmail.com">prem5182026@gmail.com</a></td></tr><tr><td>GitHub</td><td><a href="https://github.com/premkumarpg" rel="noopener noreferrer" target="_blank">github.com/premkumarpg</a></td></tr><tr><td>LinkedIn</td><td><a href="https://linkedin.com/in/prem5182026" rel="noopener noreferrer" target="_blank">linkedin.com/in/prem5182026</a></td></tr><tr><td>Education</td><td>B.Com — Dr. Zakir Husain College, Ilayangudi</td></tr></table>
+</div>
+</div>
+</section>
+<!-- ═══════ SKILLS ═══════ -->
+<section class="skills-section" id="skills">
+<div class="container">
+<div class="section-label">02. skills</div>
+<h2 class="section-title">Core <span>Competencies</span></h2>
+
+
+
+
+
+
+<div class="skills-group"><div class="skills-group-title">// Linux &amp; Troubleshooting</div><div class="skills-flex"><span class="skill-tag">Ubuntu</span><span class="skill-tag">CentOS</span><span class="skill-tag">RHEL</span><span class="skill-tag">Debian</span><span class="skill-tag">Windows Server</span><span class="skill-tag">top / htop</span><span class="skill-tag">vmstat</span><span class="skill-tag">iostat</span><span class="skill-tag">systemctl</span><span class="skill-tag">journalctl</span><span class="skill-tag">Log Analysis</span></div></div><div class="skills-group"><div class="skills-group-title">// Disk &amp; Storage</div><div class="skills-flex"><span class="skill-tag">df / du</span><span class="skill-tag">Inode Troubleshooting</span><span class="skill-tag">Large-file Checks</span><span class="skill-tag">Hard &amp; Symbolic Links</span><span class="skill-tag">Partitions</span><span class="skill-tag">LVM</span></div></div><div class="skills-group"><div class="skills-group-title">// Monitoring &amp; Alerting</div><div class="skills-flex"><span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">Datadog</span><span class="skill-tag">Splunk</span><span class="skill-tag">Nagios</span><span class="skill-tag">ManageEngine</span><span class="skill-tag">AWS CloudWatch</span><span class="skill-tag">Alert Tuning</span></div></div><div class="skills-group"><div class="skills-group-title">// Networking, DNS, Web &amp; Email</div><div class="skills-flex"><span class="skill-tag">TCP/IP</span><span class="skill-tag">Routing &amp; Ports</span><span class="skill-tag">DHCP</span><span class="skill-tag">VPN</span><span class="skill-tag">DNS Records</span><span class="skill-tag">Cloudflare CDN</span><span class="skill-tag">Nginx</span><span class="skill-tag">Apache</span><span class="skill-tag">Reverse Proxy</span><span class="skill-tag">SSL/TLS</span><span class="skill-tag">Certbot</span><span class="skill-tag">OpenSSL</span><span class="skill-tag">Postfix / SMTP</span><span class="skill-tag">SPF / DKIM / DMARC</span></div></div><div class="skills-group"><div class="skills-group-title">// Security &amp; Identity</div><div class="skills-flex"><span class="skill-tag">SSH Hardening</span><span class="skill-tag">UFW</span><span class="skill-tag">iptables</span><span class="skill-tag">firewalld</span><span class="skill-tag">Sophos NGFW</span><span class="skill-tag">OpenVPN</span><span class="skill-tag">ClamAV / Maldet</span><span class="skill-tag">IAM / RBAC</span><span class="skill-tag">Active Directory</span><span class="skill-tag">LDAP</span><span class="skill-tag">CIS Benchmarks</span><span class="skill-tag">Least-Privilege Access</span></div></div><div class="skills-group"><div class="skills-group-title">// Cloud, IaC &amp; Automation</div><div class="skills-flex"><span class="skill-tag">AWS EC2</span><span class="skill-tag">RDS</span><span class="skill-tag">S3</span><span class="skill-tag">VPC</span><span class="skill-tag">IAM</span><span class="skill-tag">ALB</span><span class="skill-tag">CloudWatch</span><span class="skill-tag">GCP (Exposure)</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Bash</span><span class="skill-tag">Python</span><span class="skill-tag">Git</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">SonarQube</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span></div></div><div class="skills-group"><div class="skills-group-title">// Databases &amp; ITSM</div><div class="skills-flex"><span class="skill-tag">MySQL</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Redis</span><span class="skill-tag">Backup &amp; Restore</span><span class="skill-tag">Index Tuning</span><span class="skill-tag">Jira</span><span class="skill-tag">ServiceNow</span><span class="skill-tag">Incident / Change / Problem Management</span><span class="skill-tag">Microsoft 365</span><span class="skill-tag">Windows 10 / 11</span></div></div></div>
+</section>
+<!-- ═══════ PROJECTS ═══════ -->
+<section id="projects">
+<div class="container">
+<div class="section-label">03. projects</div>
+<h2 class="section-title">Key <span>Projects</span></h2>
+<div class="projects-grid"><article class="project-card"><div class="project-card-top"><span class="project-icon">⌘</span><a class="project-link" href="https://github.com/premkumarpg/server-health-monitor" rel="noopener noreferrer" target="_blank">GitHub ↗</a></div><h3>Server Health Monitor</h3><p>Bash monitoring of CPU, memory, disk, and service availability with automated alerts across 37 servers.</p><div class="project-tags"><span class="project-tag">Bash</span><span class="project-tag">Linux</span><span class="project-tag">Alerts</span></div></article><article class="project-card"><div class="project-card-top"><span class="project-icon">⌘</span><span class="project-link">Project</span></div><h3>Auto SSL Setup</h3><p>Automated Let’s Encrypt / Certbot SSL provisioning and renewal for Nginx and Apache, including certificate-expiry alerting.</p><div class="project-tags"><span class="project-tag">Certbot</span><span class="project-tag">Nginx</span><span class="project-tag">Apache</span></div></article><article class="project-card"><div class="project-card-top"><span class="project-icon">⌘</span><a class="project-link" href="https://github.com/premkumarpg/prometheus-grafana-setup" rel="noopener noreferrer" target="_blank">GitHub ↗</a></div><h3>Prometheus + Grafana Setup</h3><p>Infrastructure-as-code setup of Prometheus and Grafana with prebuilt dashboards, supporting better observability and incident response.</p><div class="project-tags"><span class="project-tag">Prometheus</span><span class="project-tag">Grafana</span><span class="project-tag">IaC</span></div></article><article class="project-card"><div class="project-card-top"><span class="project-icon">⌘</span><a class="project-link" href="https://github.com/premkumarpg/db-backup-automation" rel="noopener noreferrer" target="_blank">GitHub ↗</a></div><h3>Database Backup Automation</h3><p>Database backup automation with S3 upload, tested restore workflows, and CIS hardening scripts.</p><div class="project-tags"><span class="project-tag">AWS S3</span><span class="project-tag">MySQL</span><span class="project-tag">MongoDB</span></div></article><article class="project-card"><div class="project-card-top"><span class="project-icon">⌘</span><a class="project-link" href="https://github.com/premkumarpg/linux-server-setup" rel="noopener noreferrer" target="_blank">GitHub ↗</a></div><h3>Linux Server Setup</h3><p>Linux server setup and hardening scripts based on relevant CIS security practices.</p><div class="project-tags"><span class="project-tag">Linux</span><span class="project-tag">CIS</span><span class="project-tag">Security</span></div></article><article class="project-card"><div class="project-card-top"><span class="project-icon">⌘</span><a class="project-link" href="https://github.com/premkumarpg/nginx-config-templates" rel="noopener noreferrer" target="_blank">GitHub ↗</a></div><h3>Nginx Config Templates</h3><p>Reusable Nginx reverse-proxy and SSL/TLS configuration templates.</p><div class="project-tags"><span class="project-tag">Nginx</span><span class="project-tag">Reverse Proxy</span><span class="project-tag">SSL/TLS</span></div></article></div>
+</div>
+</section>
+<!-- ═══════ EXPERIENCE ═══════ -->
+<section class="experience-section" id="experience">
+<div class="container">
+<div class="section-label">04. experience</div>
+<h2 class="section-title">Work <span>Experience</span></h2>
+<div class="timeline"><div class="timeline-item"><div class="timeline-header"><div><div class="timeline-title">Linux Server Administrator</div><div class="timeline-company">Hivelance Technologies Pvt. Ltd. · Madurai</div></div><div class="timeline-date">May 2025 – Present</div></div><div class="timeline-desc"><ul><li>Administered 15+ production and 50+ staging Linux servers across 15+ enterprise clients, supporting 99.9% SLA uptime with zero reported SLA breaches; diagnosed CPU, memory, disk I/O and inode issues using top, vmstat, iostat and df/du.</li><li>Built monitoring and centralized logging with Prometheus, Grafana, Splunk and Datadog; tuned alert thresholds to reduce noise, contributing to a reported ~40% MTTR reduction.</li><li>Responded to 100+ P1/P2 incidents with average recovery under 30 minutes; tracked incidents in Jira/ServiceNow, shared root-cause findings and documented runbooks.</li><li>Managed DNS records (A, CNAME, MX, TXT) and Cloudflare; configured Postfix/SMTP with SPF, DKIM and DMARC.</li><li>Provisioned AWS infrastructure (EC2, RDS, S3, VPC, IAM, CloudWatch) with Terraform and Ansible; containerized Node.js/Python apps with Docker and managed Kubernetes workloads.</li><li>Built GitHub Actions CI/CD pipelines for build, test, SonarQube quality gates and server deployment using Git branches and pull requests.</li><li>Automated OS patching, backups, health checks and log analysis with Bash/Python across 37 servers, saving an estimated 5–8 hours per week.</li><li>Configured Nginx and Apache virtual hosts/reverse proxy with SSL/TLS via Certbot and OpenSSL; troubleshot 502/403 errors using logs.</li><li>Secured servers with SSH hardening, least-privilege sudo/IAM RBAC, Active Directory/LDAP access control, firewalls and ClamAV/Maldet scans; applied CIS-based hardening.</li><li>Administered five production MySQL/MongoDB databases, automated backups and tested restores, managed privileges, and improved query performance by 30% through indexing.</li></ul></div></div><div class="timeline-item"><div class="timeline-header"><div><div class="timeline-title">Technical Support Engineer L1/L2</div><div class="timeline-company">New Jaisa Technologies Private Limited · Bengaluru</div></div><div class="timeline-date">Oct 2023 – Nov 2024</div></div><div class="timeline-desc"><ul><li>Provided first- and second-level technical support for software, operating system and application issues on Windows 10/11 and Linux systems.</li><li>Diagnosed network and connectivity issues involving TCP/IP, DNS, DHCP, LAN/WAN and VPN.</li><li>Troubleshot Ubuntu/CentOS servers using systemctl, journalctl, top and df/du to inspect services, logs, disk space and CPU/memory usage.</li><li>Handled Linux users, permissions and SSH access (useradd, chmod/chown, key-based login); escalated complex issues to L3 with clear notes.</li><li>Delivered remote desktop support and guided users through fixes to restore productivity.</li><li>Logged, prioritized and tracked incidents in ServiceNow, following escalation procedures and resolution timelines.</li><li>Managed user accounts, access and password resets in Active Directory/LDAP; supported Microsoft Office and Microsoft 365 users.</li><li>Installed and configured software, performed root-cause analysis, and maintained technical documentation and knowledge articles.</li></ul></div></div></div>
+</div>
+</section>
+<!-- ═══════ CERTIFICATIONS ═══════ -->
+<section id="certifications">
+<div class="container">
+<div class="section-label">05. certifications</div>
+<h2 class="section-title">Certifications &amp; <span>Education</span></h2>
+
+<div class="resume-education-grid"><div class="resume-edu-card"><div class="skills-group-title">Training</div><h3>CCNA Training</h3><p>Besant Technologies, Bangalore</p></div><div class="resume-edu-card"><div class="skills-group-title">Training</div><h3>Linux</h3><p>Besant Technologies, Bangalore</p></div><div class="resume-edu-card"><div class="skills-group-title">Training</div><h3>DevOps Tools &amp; CI/CD Pipelines</h3><p>Besant Technologies, Bangalore</p></div><div class="resume-edu-card"><div class="skills-group-title">Training</div><h3>AWS Cloud Fundamentals</h3><p>Besant Technologies, Bangalore</p></div><div class="resume-edu-card"><div class="skills-group-title">Education</div><h3>Bachelor of Commerce (B.Com)</h3><p>Dr. Zakir Husain College, Ilayangudi</p></div></div></div>
+</section>
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact" style="background:var(--bg2)">
+<div class="container">
+<div class="section-label">06. contact</div>
+<h2 class="section-title">Get In <span>Touch</span></h2>
+<div class="contact-grid">
+<div class="contact-info">
+<h3>Let's work together</h3>
+<p>Interested in Linux server administration, DevOps, cloud infrastructure, and automation opportunities.</p>
+<div class="contact-links">
+<a class="contact-link" href="tel:+919944159546">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18">
+<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0121.99 15z"></path>
+</svg>
+<span>+91 99441 59546</span>
+</a>
+<a class="contact-link" href="mailto:prem5182026@gmail.com">prem5182026@gmail.com</a>
+<a class="contact-link" href="https://github.com/premkumarpg" target="_blank">
+<svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18">
+<path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"></path>
+</svg>
+<span>github.com/premkumarpg</span>
+</a>
+<a class="contact-link" href="https://linkedin.com/in/prem5182026" target="_blank">
+<svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18">
+<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+</svg>
+<span>linkedin.com/in/prem5182026</span>
+</a>
+</div>
+</div>
+<div class="contact-form"><p>For opportunities and professional enquiries, feel free to email me directly.</p><a class="btn btn-primary" href="mailto:prem5182026@gmail.com">Email Premkumar ↗</a></div>
+</div>
+</div>
+</section>
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+<p>© 2026 <a href="#">Premkumar PG</a> — Linux Server Administrator &amp; DevOps Engineer</p>
+</footer>
+</body>
+</html>
